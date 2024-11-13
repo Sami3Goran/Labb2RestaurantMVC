@@ -1,0 +1,71 @@
+﻿@using Labb2RestaurantMVC.Models.Menu
+﻿@{
+    ViewData["Title"] = "Home - Maison Lumière";
+}
+
+@model List<Menu>
+
+<div class="homepage-hero-image">
+    <figure style="height: 100%; width: 100%; margin: 0;">
+        <picture>
+            <source media="(max-width: 768px)" srcset="/images/restaurant_interio_768webp.webp" type="image/webp" />
+            <source media="(max-width: 768px)" srcset="/images/restaurant_interior_768.jpg" type="image/jpeg" />
+            <source media="(max-width: 1200px)" srcset="/images/restaurant_interior_1200webp.webp" type="image/webp" />
+            <source media="(max-width: 1200px)" srcset="/images/restaurant_interior_1200.jpg" type="image/jpeg" />
+            <source srcset="/images/restaurant_interior_1920webp.webp" type="image/webp" />
+            <source srcset="/images/restaurant_interior_1920.jpg" type="image/jpeg" />
+            <img src="/images/restaurant_interior_1920.jpg"
+                 alt="Restaurant Interior"
+                 class="img-fluid" loading="lazy" />
+        </picture>
+    </figure>
+</div>
+
+<div class="text-center">
+    <h1 class="display-4 fw-bold">Maison Lumière</h1>
+    <h2 class="display-6 text-muted">Créations Uniques</h2>
+    <div class="row d-flex justify-content-center">
+        @if (ViewBag.ErrorMessage != null)
+        {
+            <div class="alert alert-danger col-lg-6 col-md-8 col-sm-10">
+                @ViewBag.ErrorMessage
+            </div>
+        }
+
+
+        @{
+            var images = new List<string>
+        {
+        "https://images.unsplash.com/photo-1724015736618-f2a734103754?q=80&w=1931&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+        "https://images.unsplash.com/photo-1605880319718-163216d8b95c?q=80&w=1951&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+        "https://images.unsplash.com/photo-1605880319307-757c2d258a3f?q=80&w=1926&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+        };
+            var imageIndex = 0;
+        }
+
+        <div class="row d-flex justify-content-center">
+            @foreach (var food in Model)
+            {
+                
+                var imageUrl = images[imageIndex % images.Count];
+                imageIndex++;
+
+                <div class="card m-3" style="width: 18rem;">
+                    <img src="@imageUrl" class="card-img-top" alt="Food Image">
+                    <div class="card-body">
+                        <h5 class="card-title fw-bold">@food.FoodName</h5>
+                        <p class="card-text">@food.FoodPrice</p>
+                    </div>
+                </div>
+            }
+        </div>
+
+
+    </div>
+    <p class="lead mx-auto" style="max-width: 600px;">
+        <em>
+            Taste the Essence of Regal Sophistication
+        </em>
+    </p>
+    <a asp-controller="Menu" asp-action="Index" class="btn btn-outline-warning btn-lg mt-4">View Full Menu</a>
+</div>

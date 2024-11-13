@@ -1,0 +1,59 @@
+﻿@using Labb2RestaurantMVC.Models.Menu
+@model Menu
+
+<div class="container h-100">
+    <div class="row justify-content-center align-items-center h-100">
+        <div class="col-md-6 col-lg-4">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h2 class="text-center mb-4">Update Menu</h2>
+
+                    @* <p>MenuId: @Model.Id</p> *@
+
+                    <form asp-controller="Admin" asp-action="UpdateFood" method="post">
+                        <div class="form-group mb-3">
+                            <label asp-for="FoodName" class="form-label">Dish</label>
+                            <input asp-for="FoodName" class="form-control" />
+                            <span asp-validation-for="FoodName" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group mb-3">
+                            <label asp-for="FoodInfo" class="form-label">Information</label>
+                            <textarea asp-for="FoodInfo" class="form-control auto-resize" rows="3" placeholder="Write information about the food"></textarea>
+                            <span asp-validation-for="FoodInfo" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group mb-3">
+                            <label asp-for="FoodPrice" class="form-label">Price</label>
+                            <input asp-for="FoodPrice" class="form-control" />
+                            <span asp-validation-for="FoodPrice" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-check mb-3">
+                            <input asp-for="IsPopular" type="checkbox" class="form-check-input" id="IsPopular" />
+                            <label class="form-check-label" for="IsPopular">Is Popular</label>
+                        </div>
+
+                        <div class="form-check mb-3">
+                            <input asp-for="IsAvailable" type="checkbox" class="form-check-input" id="IsAvailable" />
+                            <label class="form-check-label" for="IsAvailable">Is Available</label>
+                        </div>
+
+                        <input type="hidden" asp-for="Id" />
+
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-primary btn-lg">Save</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .auto-resize {
+        max-height: 200px;
+        overflow-y: auto;
+    }
+</style>

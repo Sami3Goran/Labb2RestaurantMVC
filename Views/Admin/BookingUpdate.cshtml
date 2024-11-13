@@ -1,0 +1,153 @@
+﻿@using Labb2RestaurantMVC.Models.Booking
+@model BookingInfoAllDTO
+
+
+<div class="container h-100">
+    <div class="row justify-content-center align-items-center h-100">
+        <div class="col-md-6 col-lg-4">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h2 class="text-center mb-4">Update Booking</h2>
+
+                    <form asp-controller="Admin" asp-action="BookingUpdate" method="post">
+                        
+                        <div class="form-group mb-3">
+                            <label asp-for="BookingDate" class="form-label">Booking Date</label>
+                            <input asp-for="BookingDate" type="date" id="date-input" class="form-control" />
+                            <span asp-validation-for="BookingDate" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group mb-3">
+                            <label asp-for="GuestAttending" class="form-label">Guests Attending</label>
+                            <select asp-for="GuestAttending" id="guest-attending" class="form-control">
+                                @for (int i = 1; i <= 8; i++)
+                                {
+                                    <option value="@i">@i</option>
+                                }
+                            </select>
+                            <span asp-validation-for="GuestAttending" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group mb-3">
+                            <label asp-for="TableId" class="form-label">Table</label>
+                            <select asp-for="TableId" id="table-id" class="form-control">
+                            </select>
+                            <span asp-validation-for="TableId" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group mb-3">
+                            <label asp-for="BookingStart" class="form-label">Booking Start</label>
+                            <select asp-for="BookingStart" id="booking-start" class="form-control">
+                            </select>
+                            <span asp-validation-for="BookingStart" class="text-danger"></span>
+                        </div>
+
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-primary btn-lg">Save</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            console.log('Document is ready');
+
+            // Hantera ändringar i dropdownen för gäster
+            $('#guest-attending').change(function () {
+                var guestAttending = $(this).val();
+                console.log('Guest attending:', guestAttending); // Kontrollera att detta är korrekt
+                if (guestAttending) {
+                    // Gör API-anrop för att hämta tillgängliga bord
+                    $.ajax({
+                        url: `https://localhost:7003/api/Table/GetAvailableTables/${guestAttending}`,
+                        type: 'GET',
+                        success: function (data) {
+                            console.log('Tables fetched:', data);
+                            // Fyll på TableId dropdown
+                            var tableDropdown = $('#table-id');
+                            tableDropdown.empty();
+                            tableDropdown.append('<option value="">Pick an available table</option>');
+                            $.each(data, function (index, table) {
+                                console.log(`Table ${table.id}: ${table.tableNumber}`); // Kontrollera att bord läggs till korrekt
+                                tableDropdown.append(`<option value="${table.id}">${table.tableNumber}</option>`);
+                            });
+                        },
+                        error: function (xhr, status, error) {
+                            console.error('Error fetching tables:', error);
+                            alert('Failed to load tables. Please try again.');
+                        }
+                    });
+                }
+            });
+
+            // Hantera ändringar i dropdownen för bord och datum
+            $('#table-id, #date-input').change(function () {
+                var tableId = $('#table-id').val();
+                var bookingDate = $('#date-input').val();
+                console.log('Table or date changed:', tableId, bookingDate); // Kontrollera att rätt värden skickas
+                if (tableId && bookingDate) {
+                    // Gör API-anrop för att hämta bokningar baserat på TableId och datum
+                    $.ajax({
+                        url: `https://localhost:7003/api/Booking/GetBookingByTableIdAndDate/${tableId}/${bookingDate}`,
+                        type: 'GET',
+                        success: function (data) {
+                            console.log('Booking times fetched:', data);
+                            var availableTimes = getAvailableTimes(data); // Hämta tillgängliga tider baserat på bokningar
+
+                            // Fyll på StartTime dropdown
+                            var timeDropdown = $('#booking-start');
+                            timeDropdown.empty();
+                            timeDropdown.append('<option value="">Pick a time</option>');
+                            $.each(availableTimes, function (index, time) {
+                                console.log(`Available time: ${time.time}`); // Kontrollera tillgängliga tider
+                                timeDropdown.append(`<option value="${time.time}">${time.time}</option>`);
+                            });
+                        },
+                        error: function (xhr, status, error) {
+                            console.error('Error fetching booking times:', error);
+                            alert('Failed to load booking times. Please try again.');
+                        }
+                    });
+                }
+            });
+
+            // Skapa tidsluckor i halvtimmesintervall
+            function createTimeSlots() {
+                const times = [];
+                for (let hour = 10; hour <= 22; hour++) {
+                    for (let minute = 0; minute < 60; minute += 30) {
+                        if (hour === 22 && minute > 0) break;
+                        const time = `${hour.toString().padStart(2, '0')}:${minute.toString().padStart(2, '0')}`;
+                        times.push(time);
+                    }
+                }
+                return times;
+            }
+
+            // Hämta tillgängliga tider baserat på redan bokade tider
+            function getAvailableTimes(timeBooked) {
+                const slots = createTimeSlots();
+                const bookedTimes = timeBooked.map((booking) =>
+                    booking.bookingStart.split(':')[0] + ':' + booking.bookingStart.split(':')[1]
+                );
+
+                return slots.map((time, index) => {
+                    // Kontrollera om denna tid eller någon av de nästa tre tidsluckorna är bokad (två timmars buffert efter)
+                    const isBooked = bookedTimes.includes(time) ||
+                        [1, 2, 3].some(offset => slots[index + offset] && bookedTimes.includes(slots[index + offset])) ||
+                        [-1, -2, -3].some(offset => slots[index + offset] && bookedTimes.includes(slots[index + offset]));
+
+                    return {
+                        time,
+                        isBooked,
+                    };
+                }).filter(slot => !slot.isBooked); // Returnera endast tillgängliga tidsluckor
+            }
+        });
+    </script>
+}

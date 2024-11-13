@@ -1,0 +1,50 @@
+﻿@using Labb2RestaurantMVC.Models.Menu
+@model List<Menu>
+
+<div class="container">
+    <h2 class="display-3 text-center mb-4">Menu</h2>
+
+    <div class="d-flex justify-content-center mb-3">
+        <a asp-action="CreateFood" asp-controller="Admin" class="btn btn-outline-primary">Create Menu</a>
+    </div>
+
+    @if (ViewBag.ErrorMessage != null)
+    {
+        <div class="alert alert-danger text-center" style="max-width: 600px; margin: 0 auto;">
+            @ViewBag.ErrorMessage
+        </div>
+    }
+
+    <div class="row">
+        @foreach (var food in Model)
+        {
+            <div class="col-12 mb-4">
+                
+                <div class="card border-secondary shadow-sm h-100">
+                    <div class="card-body d-flex flex-column">
+                        <h5 class="card-title">@food.FoodName</h5>
+                        <p class="card-text flex-grow-1">Information: @food.FoodInfo</p>
+                        <p class="card-text">Price: @food.FoodPrice :-</p>
+                        <p class="d-flex justify-content-start">
+                            <span class="badge @(food.IsPopular ? "bg-success" : "bg-danger") me-2">
+                                @(food.IsPopular ? "Popular" : "Not Popular")
+                            </span>
+                            <span class="badge @(food.IsAvailable ? "bg-success" : "bg-danger")">
+                                @(food.IsAvailable ? "Available" : "Unavailable")
+                            </span>
+                        </p>
+                        <div class="d-flex justify-content-between mt-3">
+                            <div class="d-flex">
+                                <a asp-controller="Admin" asp-action="UpdateFood" asp-route-id="@food.Id" class="btn btn-warning btn-sm me-2">Update</a>
+                                <form method="post" asp-action="DeleteFood" style="display:inline;">
+                                    <input type="hidden" name="id" value="@food.Id" />
+                                    <button type="submit" class="btn btn-danger btn-sm">Remove</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>

@@ -1,0 +1,226 @@
+﻿@{
+    // Check if IsLandingPage is set in ViewData, otherwise set it to false
+    var theLandingPage = ViewData["TheLandingPage"] as bool? ?? false;
+    var classLandingPage = theLandingPage ? "landing-page" : "";
+    var paddingClasslandingPage = theLandingPage ? "pt-0 ps-0 p-0 pb-5" : "pb-5 pt-5";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Maison Lumière - A Taste of Refined Luxury</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/Menu.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/Home.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <style>
+        /* Elegant och minimalistisk färgpalett */
+        body {
+            background-color: #FDF5E6; /* Ljus, mjuk beige för en lugn känsla */
+            color: #333333; /* Mörkgrå text för sofistikerad läsbarhet */
+        }
+
+        .navbar, .footer {
+            background-color: #FAF9F6; /* Ljusare vit-beige för en mjukare ton */
+            color: #333333; /* Samma mörkgrå som huvudtexten */
+            border-radius: 10px; /* Avrundade hörn på header och footer */
+            border: 2px solid #D1B18A; /* Guldaktig kant runt hela container */
+            padding-top: 20px;
+            padding-bottom: 20px;
+        }
+
+        /* Navbar-container */
+        .navbar {
+            margin: 20px 10px; /* Lägger till lite marginal runt navbar */
+            padding: 15px 10px; /* Justering av padding */
+        }
+
+        /* Footer-container */
+        .footer {
+            margin: 20px 10px; /* Lägger till lite marginal runt footer */
+            padding: 20px 10px; /* Justering av padding */
+        }
+
+        /* Justera Maison Lumière-namnet i navbar */
+        .navbar-brand {
+            font-family: 'Playfair Display', serif; /* Elegant och lyxig font */
+            font-weight: 700; /* Fetstil för extra stilfull känsla */
+            color: #C4A17D; /* Mörkare guld för ett mer sofistikerat utseende */
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2); /* Lägger till en liten skugga för extra dimension */
+        }
+
+            .navbar-brand:hover {
+                color: #D1B18A; /* En något varmare guldnyans för hover-effekt */
+            }
+
+        /* För att ändra färgen på navbar-toggler-icon */
+        .navbar-toggler-icon {
+            background-color: #D1B18A; /* Mörkare guld för att göra ikonen synlig */
+        }
+
+        .navbar-nav .nav-link {
+            color: #E6CBA8; /* Dämpat guld för att matcha varumärkets exklusivitet */
+        }
+
+            .navbar-nav .nav-link:hover {
+                color: #D1B18A; /* Guld för hover-effekt */
+            }
+
+        .footer .footer-left, .footer .footer-right {
+            color: #333333; /* Mörkgrå text för footer */
+        }
+
+            .footer .footer-left a, .footer .footer-right a {
+                color: #333333;
+            }
+
+                .footer .footer-left a:hover, .footer .footer-right a:hover {
+                    color: #D1B18A; /* Guldnyans för hovring */
+                }
+
+        /* Logout-knappen */
+        .btn-logout {
+            color: #E6CBA8; /* Guldtext för Logout-knappen */
+            background-color: #333333; /* Mörk bakgrund */
+            border-color: #D1B18A; /* Dämpat guld */
+        }
+
+            .btn-logout:hover {
+                background-color: #FFFFFF; /* Vit bakgrund på hover */
+                color: #333333; /* Svart text på hover */
+                border-color: #333333; /* Mörkare border på hover */
+            }
+
+        /* Anpassad stil för Admin-knapp i footer */
+        .footer-right .btn-admin {
+            background-color: #E6CBA8; /* Svart bakgrund för Admin-knappen */
+            color: #333333; /* Guldtext */
+            border: 2px solid #D1B18A; /* Guldaktig border */
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+            /* Hover-effekt för Admin-knappen */
+            .footer-right .btn-admin:hover {
+                background-color: #FFFFFF; /* Ljusare guld när man hovrar */
+                color: #D1B18A; /* Svart text när man hovrar */
+                border-color: #333333; /* Mörkare border på hover */
+            }
+
+        /* Anpassad hamburgerikon med tre streck */
+        .custom-toggler-icon {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            width: 30px;
+            height: 25px;
+        }
+
+            .custom-toggler-icon .bar {
+                height: 4px;
+                background-color: #D1B18A; /* Mörkare guld för att göra ikonen synlig */
+                border-radius: 2px;
+                transition: 0.3s;
+            }
+
+        /* För att skapa en hover-effekt eller när den är aktiv */
+        .navbar-toggler.collapsed .custom-toggler-icon .bar {
+            background-color: #D1B18A; /* Mörkare guld när den är inaktiv */
+        }
+
+        .navbar-toggler:not(.collapsed) .custom-toggler-icon .bar {
+            background-color: #D1B18A; /* Ljusare när den är aktiv (ex. när menyn är öppen) */
+        }
+
+        /* Använd Bootstrap för responsiv layout */
+        .container-fluid {
+            padding-left: 0;
+            padding-right: 0;
+        }
+
+        .footer {
+            text-align: center;
+        }
+
+        .navbar-collapse {
+            justify-content: flex-end;
+        }
+
+
+
+    </style>
+</head>
+<body class="@classLandingPage">
+    <header>
+        <nav class="navbar navbar-expand-sm shadow-sm py-3">
+            <div class="container-fluid">
+                <a class="navbar-brand" style="font-family: 'Merriweather', serif; font-weight: 700;" asp-area="" asp-controller="Home" asp-action="Index">
+                    <i class="fa-solid fa-wine-glass-alt"></i> Maison Lumière
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <div class="custom-toggler-icon">
+                        <span class="bar"></span>
+                        <span class="bar"></span>
+                        <span class="bar"></span>
+                    </div>
+                </button>
+                <div class="navbar-collapse collapse">
+                    <ul class="navbar-nav flex-grow-1 justify-content-end">
+                        <li class="nav-item">
+                            <a class="nav-link fw-bold px-3" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link fw-bold px-3" asp-area="" asp-controller="Menu" asp-action="Index">Menu</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link fw-bold px-3" href="https://tableo.restaurantcrissier.com/restaurant?step=1&lang=gb" target="_blank">Booking</a>
+                        </li>
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                            <li class="nav-item">
+                                <form asp-controller="Account" asp-action="Logout" method="post" class="d-inline">
+                                    <button type="submit" class="btn btn-logout btn-sm">Logout</button>
+                                </form>
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link fw-bold px-3" asp-area="" asp-controller="Account" asp-action="Login">Login</a>
+                            </li>
+                        }
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <div class="container-fluid @paddingClasslandingPage">
+        @RenderBody()
+    </div>
+
+    <footer class="footer py-4">
+        <div class="container d-flex justify-content-between align-items-center">
+            <div class="footer-left">
+                &copy; 2024 - <strong>Maison Lumière</strong>
+            </div>
+            <div class="footer-right">
+                @if (User.Identity.IsAuthenticated)
+                {
+                    <a href="@Url.Action("Index", "Admin")" class="btn-admin">Admin</a>
+                }
+            </div>
+        </div>
+    </footer>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

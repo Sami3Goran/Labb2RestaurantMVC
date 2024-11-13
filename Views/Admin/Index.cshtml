@@ -1,0 +1,30 @@
+﻿
+
+<main class="container mt-4">
+    <h2 class="text-center display-3 mb-5">Page for Admin</h2>
+
+    <div class="row">
+        <div class="col-md-6 mb-4">
+            <div class="card border-dark shadow-sm">
+                <div class="card-header bg-dark text-white">
+                    <h4 class="mb-0">All Bookings</h4>
+                </div>
+                <div class="card-body">
+                    <p class="card-text">See or change bookings</p>
+                    <a asp-controller="Admin" asp-action="BookingsAll" class="btn btn-outline-primary">View All Bookings</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 mb-4">
+            <div class="card border-dark shadow-sm">
+                <div class="card-header bg-dark text-white">
+                    <h4 class="mb-0">Edit Menu</h4>
+                </div>
+                <div class="card-body">
+                    <p class="card-text">See or change Menu.</p>
+                    <a asp-controller="Admin" asp-action="Menu" class="btn btn-outline-primary">View Menu</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>

@@ -1,0 +1,22 @@
+﻿@using Labb2RestaurantMVC.Models.Menu
+@model List<Menu>
+
+<div class="container text-center menu-page py-5">
+    
+    <h1 class="display-4 fw-bold text-uppercase">Maison Lumière</h1>
+
+    
+    <h2 class="display-6 mb-5 text-muted">An Extraordinary Culinary Experience</h2> 
+
+    
+    <div class="menu-container mt-4">
+        @foreach (var food in Model)
+        {
+            <div class="menu-item mb-4">
+                <h5 class="card-title">@food.FoodName</h5>
+                <p class="card-text">@food.FoodInfo</p>
+                <p class="card-text">@food.FoodPrice :-</p>
+            </div>
+        }
+    </div>
+</div>
